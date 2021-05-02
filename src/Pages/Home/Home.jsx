@@ -216,7 +216,7 @@ const Home = () => {
                       </ListGroup>
                       <Accordion>
                         <Accordion.Toggle as={Button} eventKey="0">
-                          Ver mas
+                          Ver más / Ver menos
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
                           <div>

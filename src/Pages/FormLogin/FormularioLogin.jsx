@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Form, Row, Col, InputGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { Toast } from '../../components/alert';
 import data from '../../data.json'
 import "./FormularioLogin.css";
+import { Toast } from "../../components/alert";
 
 const FormularioLogin = () => {
   let history = useHistory();
