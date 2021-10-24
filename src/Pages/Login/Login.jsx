@@ -2,36 +2,33 @@ import React, { useEffect, useState } from "react";
 import { Card, Button, Form, Row, Col, InputGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import data from '../../data.json'
-import "./FormularioLogin.css";
+import "./Login.css";
 import { Toast } from "../../components/alert";
 
 const FormularioLogin = () => {
   let history = useHistory();
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: 'challenge@alkemy.org', password: 'react' });
   const [alertMessage, setAlertMessage] = useState('');
-  const [hasLogin, setHasLogin] = useState(false);
+  const [, setHasLogin] = useState(false);
 
-  const users = data.users;
   const onSubmitForm = (event) => {
     event.preventDefault();
     handleLogin()
   };
 
   const validators = () => {
-    const registeredUserNames = users.map((user) => user.email);
-    const currentUserObj = users.filter((user) => user.email)[0];
 
     if (credentials.email === '' || credentials.password === '') {
       setAlertMessage('Ingrese los datos por favor.');
       return false;
-    } else if (!registeredUserNames.includes(credentials.email)) {
+    } else if (!credentials.email) {
       setAlertMessage('El email ingresado es invalido.');
       return false;
-    } else if (credentials.password !== currentUserObj.password) {
+    } else if (!credentials.password) {
       setAlertMessage('Contraseña incorrecta.');
       return false;
     }
-    return currentUserObj;
+    return '';
   };
 
 

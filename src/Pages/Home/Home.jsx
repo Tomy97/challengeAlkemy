@@ -6,99 +6,16 @@ import UseFetch from "../../hooks/UseFetch";
 
 const Home = () => {
   const { state, getSuperHeroes } = UseFetch();
+  const [alertMessage, setAlertMessage] = useState('')
 
   const [equipo, setEquipo] = useState([]);
-  const [totalCombat, setTotalCombat] = useState(0.0);
-  const [totalDurability, setTotalDurability] = useState(0.0);
-  const [totalIntelligence, setTotalIntelligence] = useState(0.0);
-  const [totalPower, setTotalPower] = useState(0.0);
-  const [totalSpeed, setTotalSpeed] = useState(0.0);
-  const [totalStrength, setTotalStrength] = useState(0.0);
-  const [promedioPeso, setpromedioPeso] = useState(0.0);
-  const [promedioAltura, setpromedioAltura] = useState(0.0);
-  const [mayorStat, setMayorStat] = useState("");
 
-  const validarAgregar = hero => {
-    if (equipo.length === 6) {
-      return "No puede agregar más de 6 miembros al equipo";
-    }
-
-    if (equipo.find(heroe => heroe.id === hero.id)) {
-      return "Ya agregó al héroe al equipo";
-    }
-
-    if (equipo.filter(heroe => heroe.biography.alignment === "good").length === 3) {
-      return "No puede haber más de 3 heroes con orientación buena";
-    }
-
-    if (equipo.filter(heroe => heroe.biography.alignment === "bad").length === 3) {
-      return "No puede haber más de 3 heroes con orientación mala";
-    }
-
-    return "";
-  }
-
-  useEffect(() => {
-    let powerstats = {
-      combat: 0,
-      durability: 0,
-      intelligence: 0,
-      power: 0,
-      speed: 0,
-      strength: 0,
-    }
-    let peso = 0.0
-    let altura = 0.0
-
-    equipo.forEach(hero => {
-      if (hero.appearance.weight[1]) { //peso en kg
-        const pesoHero = parseFloat(hero.appearance.weight[1].replace(" kg", ""));
-        peso = peso + pesoHero;
-      }
-      if (hero.appearance.height[1]) { //altura en cm
-        const alturaHero = parseFloat(hero.appearance.height[1].replace(" cm", ""));
-        altura = altura + alturaHero;
-      }
-      Object.keys(hero.powerstats).forEach(key => {
-        if (hero.powerstats[key] !== "null") {
-          powerstats[key] = powerstats[key] + parseInt(hero.powerstats[key]);
-        }
-      });
-    });
-
-    setTotalCombat((powerstats.combat));
-    setTotalDurability((powerstats.durability));
-    setTotalIntelligence((powerstats.intelligence));
-    setTotalPower((powerstats.power));
-    setTotalSpeed((powerstats.speed));
-    setTotalStrength((powerstats.strength));
-
-    //ordeno las stats de mayor a menor
-
-
-
-    const statsOrdenadas = Object.entries(powerstats).sort((a, b) => b[1] - a[1]);
-    if (statsOrdenadas[0][1] !== 0) {
-      // seteo la primera si es distinto de 0
-      setMayorStat(statsOrdenadas[0][0]);
-    }
-
-    if (peso !== 0) {
-      setpromedioPeso((peso / equipo.length).toFixed(2));
-    }
-    if (altura !== 0) {
-      setpromedioAltura((altura / equipo.length).toFixed(2));
-    }
-  }, [equipo]);
 
   const agregarHeroeAEquipo = (hero) => {
     const resultadoValidacion = validarAgregar(hero);
 
     if (resultadoValidacion === "") {
-      const copiaDeEquipo = [...equipo];
-      copiaDeEquipo.push(hero);
-      setEquipo(copiaDeEquipo);
-      // calcularEstadisticas();
+      setEquipo([...equipo, hero]);
     } else {
       Toast.fire({
         icon: "error",
@@ -106,10 +23,35 @@ const Home = () => {
       })
     }
   }
+
+  const validarAgregar = hero => {
+    if (equipo.length === 6) {
+      return setAlertMessage('No puedes agregar más de 6 personajes')
+    }
+    if (equipo.find(({ id }) => id === hero.id)) {
+      return setAlertMessage("Ya agregó al héroe al equipo")
+    }
+    if (equipo.filter(heroe => heroe.biography.alignment === "good").length >= 3) {
+      return setAlertMessage("Solo puede haber 3 heroes con orientación buena")
+    }
+    if (equipo.filter(heroe => heroe.biography.alignment === "bad").length >= 4) {
+      return setAlertMessage("Solo puede haber de 3 heroes con orientación mala")
+    }
+    return "";
+  }
+
+  const fireAlertMessage = () => {
+    alertMessage.length &&
+      Toast.fire({
+        icon: 'error',
+        title: alertMessage
+      })
+  };
+  useEffect(fireAlertMessage, [alertMessage]);
+
   const sacarDelEquipo = (hero) => {
     const equipoFiltrado = equipo.filter(heroe => heroe.id !== hero.id);
     setEquipo(equipoFiltrado)
-    // calcularEstadisticas();
   }
 
   return (
@@ -127,19 +69,6 @@ const Home = () => {
           <h3 className="text-center">
             Mi Equipo
           </h3>
-          <Row>
-            <Col>
-              <p>Mayor Stat: {mayorStat}</p>
-              <p>Altura promedio: {promedioAltura} cm</p>
-              <p>Peso promedio: {promedioPeso} kg</p>
-              <p>Total Combat: {totalCombat}</p>
-              <p>Total Intelligence: {totalIntelligence}</p>
-              <p>Total Durability: {totalDurability}</p>
-              <p>Total Power: {totalPower}</p>
-              <p>Total Strength: {totalStrength}</p>
-              <p>Total Speed: {totalSpeed}</p>
-            </Col>
-          </Row>
           <Row>
             {
               equipo.map(hero => (
@@ -162,6 +91,9 @@ const Home = () => {
                           <ListGroup.Item>Durabilidad: {hero.powerstats.durability} </ListGroup.Item>
                           <ListGroup.Item>Poder: {hero.powerstats.power} </ListGroup.Item>
                           <ListGroup.Item>Combate: {hero.powerstats.combat} </ListGroup.Item>
+                          <ListGroup.Item>
+                            Condicion: {hero.biography.alignment}
+                          </ListGroup.Item>
                         </ListGroup>
                         <Button variant="danger" className="text-right mt-4" onClick={() => sacarDelEquipo(hero)}>Sacar del Equipo</Button>
                       </Card.Body>
@@ -201,6 +133,9 @@ const Home = () => {
                         <ListGroup.Item>
                           Primera Aparción: {hero.biography["first-appearance"]}
                         </ListGroup.Item>
+                        <ListGroup.Item>
+                          Condicion: {hero.biography.alignment}
+                        </ListGroup.Item>
                         <hr />
                       </ListGroup>
                       <ListGroup variant="flush">
@@ -224,7 +159,7 @@ const Home = () => {
                             <ListGroup variant="flush">
                               <Card.Title>
                                 Caracteristicas
-                            </Card.Title>
+                              </Card.Title>
                               <ListGroup.Item>Genero: {hero.appearance.gender} </ListGroup.Item>
                               <ListGroup.Item>Raza: {hero.appearance.race} </ListGroup.Item>
                               <ListGroup.Item>Altura: {hero.appearance.height} </ListGroup.Item>
@@ -236,7 +171,7 @@ const Home = () => {
                             <ListGroup variant="flush">
                               <Card.Title>
                                 Conexiones
-                            </Card.Title>
+                              </Card.Title>
                               <ListGroup.Item>{hero.connections["group-affiliation"]} </ListGroup.Item>
                             </ListGroup>
                           </div>

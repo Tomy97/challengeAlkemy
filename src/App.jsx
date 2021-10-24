@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import FormularioLogin from './Pages/FormLogin/FormularioLogin'
+import Login from './Pages/Login/Login'
 import Home from './Pages/Home/Home'
 
 const App = () => {
@@ -8,13 +8,13 @@ const App = () => {
         <BrowserRouter>
             <Switch>
                 <Route exact path='/'>
-                    <FormularioLogin></FormularioLogin>
+                    <Login />
                 </Route>
                 <Route exact path='/login'>
-                    <FormularioLogin></FormularioLogin>
+                    <Login />
                 </Route>
                 <Route exact path='/home'>
-                    <Home></Home>
+                    <Home />
                 </Route>
             </Switch>
         </BrowserRouter>

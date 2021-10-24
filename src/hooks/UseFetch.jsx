@@ -1,23 +1,17 @@
+import axios from "axios";
 import { useState } from "react";
 
 const UseFetch = () => {
-    let [superHeroes, setsuperHeroes] = useState([]);
+    const [superHeroes, setsuperHeroes] = useState([]);
 
-    const getSuperHeroes = (e) => {
+    const getSuperHeroes = async (e) => {
+        const api = 'https://superheroapi.com/api.php/10225623741490454/search/'
         if (e.target.value.length >= 3) {
-            fetch("https://superheroapi.com/api.php/10225623741490454/search/" + e.target.value)
-                .then((res) => res.json())
-                .then(
-                    (result) => {
-                        const apiResponse = result.results;
-                        if (apiResponse) {
-                            setsuperHeroes(apiResponse)
-                        }
-                    },
-                    (error) => {
-                        console.log(error)
-                    }
-                );
+            const { data } = await axios.get(api + e.target.value);
+            const { results } = data;
+            if (results) {
+                setsuperHeroes(results)
+            }
         }
     }
     return {
