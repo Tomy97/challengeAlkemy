@@ -7,9 +7,10 @@ import { Toast } from "../../components/alert";
 
 const FormularioLogin = () => {
   let history = useHistory();
-  const [credentials, setCredentials] = useState({ email: 'challenge@alkemy.org', password: 'react' });
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [alertMessage, setAlertMessage] = useState('');
   const [, setHasLogin] = useState(false);
+
 
   const onSubmitForm = (event) => {
     event.preventDefault();
@@ -17,18 +18,24 @@ const FormularioLogin = () => {
   };
 
   const validators = () => {
+    // validar el email y contraseña ingresados correspondan a alguno de los de data, si es igual ej: 'challenge@alkemy.org'
+    // me vuelva true y en caso de que no false
+    const userEmail = data.users.filter(u => u.email === credentials.email)[0];
 
+    console.log(userEmail);
     if (credentials.email === '' || credentials.password === '') {
       setAlertMessage('Ingrese los datos por favor.');
       return false;
-    } else if (!credentials.email) {
+    }
+    else if (credentials.email !== userEmail.email) {
       setAlertMessage('El email ingresado es invalido.');
       return false;
-    } else if (!credentials.password) {
+    }
+    else if (credentials.password !== userEmail.password) {
       setAlertMessage('Contraseña incorrecta.');
       return false;
     }
-    return '';
+    return true;
   };
 
 

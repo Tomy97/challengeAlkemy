@@ -10,7 +10,6 @@ const Home = () => {
 
   const [equipo, setEquipo] = useState([]);
 
-
   const agregarHeroeAEquipo = (hero) => {
     const resultadoValidacion = validarAgregar(hero);
 
@@ -25,19 +24,21 @@ const Home = () => {
   }
 
   const validarAgregar = hero => {
-    if (equipo.length === 6) {
+    if (equipo.length >= 6) {
       return setAlertMessage('No puedes agregar más de 6 personajes')
     }
     if (equipo.find(({ id }) => id === hero.id)) {
       return setAlertMessage("Ya agregó al héroe al equipo")
     }
-    if (equipo.filter(heroe => heroe.biography.alignment === "good").length >= 3) {
+    if (equipo.filter(heroe => heroe.biography.alignment === "good").length === 4) {
+      debugger
       return setAlertMessage("Solo puede haber 3 heroes con orientación buena")
     }
-    if (equipo.filter(heroe => heroe.biography.alignment === "bad").length >= 4) {
+    if (equipo.filter(heroe => heroe.biography.alignment === "bad").length === 3) {
+      debugger
       return setAlertMessage("Solo puede haber de 3 heroes con orientación mala")
     }
-    return "";
+    return '';
   }
 
   const fireAlertMessage = () => {
