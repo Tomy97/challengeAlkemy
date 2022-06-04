@@ -5,11 +5,11 @@ import Search from "../../components/Search";
 import UseFetch from "../../hooks/UseFetch";
 
 const Home = () => {
-  const { state, getSuperHeroes } = UseFetch();
+  const { state } = UseFetch();
   const [alertMessage, setAlertMessage] = useState('')
-
+  const [hero, setHero] = useState('')
   const [equipo, setEquipo] = useState([]);
-
+  console.log(hero);
   const agregarHeroeAEquipo = (hero) => {
     const resultadoValidacion = validarAgregar(hero);
 
@@ -62,7 +62,7 @@ const Home = () => {
       </h1>
       <Row className="justify-content-center">
         <Col sm={3}>
-          <Search getSuperHeroes={getSuperHeroes} />
+          <Search getSuperHeroes={ setHero } />
         </Col>
       </Row>
       <Row>

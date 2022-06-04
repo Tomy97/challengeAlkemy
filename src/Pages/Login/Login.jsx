@@ -21,9 +21,8 @@ const FormularioLogin = () => {
     // validar el email y contraseña ingresados correspondan a alguno de los de data, si es igual ej: 'challenge@alkemy.org'
     // me vuelva true y en caso de que no false
     const userEmail = data.users.filter(u => u.email === credentials.email)[0];
-
-    console.log(userEmail);
-    if (credentials.email === '' || credentials.password === '') {
+    
+    if (!credentials.email || !credentials.password) {
       setAlertMessage('Ingrese los datos por favor.');
       return false;
     }
@@ -72,7 +71,7 @@ const FormularioLogin = () => {
 
   return (
     <>
-      <Row className='justify-content-center'>
+      <Row className='py-5 justify-content-center'>
         <Col xs={3} md={3}>
           <Card className="shadow-box-example hoverable">
             <Card.Body>
