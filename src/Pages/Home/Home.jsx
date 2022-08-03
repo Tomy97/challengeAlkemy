@@ -5,6 +5,7 @@ import Search from "../../components/Search";
 import UseFetch from "../../hooks/UseFetch";
 
 const Home = () => {
+  console.log('Negro culo ruto');
   const { state, getSuperHeroes } = UseFetch();
   const [alertMessage, setAlertMessage] = useState('')
 
