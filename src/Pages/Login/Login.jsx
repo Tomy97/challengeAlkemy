@@ -25,13 +25,10 @@ const FormularioLogin = () => {
   };
 
   const validators = () => {
-    // validar el email y contraseña ingresados correspondan a alguno de los de data, si es igual ej: 'challenge@alkemy.org'
-    // me vuelva true y en caso de que no false
     const userEmail = data.users.filter(
       (u) => u.email === credentials.email
     )[0];
 
-    console.log(userEmail);
     if (credentials.email === "" || credentials.password === "") {
       setAlertMessage("Ingrese los datos por favor.");
       return false;
@@ -77,70 +74,89 @@ const FormularioLogin = () => {
   };
 
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Card className="shadow-box-example hoverable">
-            <Card.Body>
-              <Form onSubmit={onSubmitForm}>
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email</Form.Label>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        <i className="fas fa-envelope"></i>
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <Form.Control
-                      type="email"
-                      placeholder="Ingrese su email"
-                      name="email"
-                      onChange={(event) =>
-                        setCredentials({
-                          ...credentials,
-                          email: event.target.value,
-                        })
-                      }
-                      value={credentials.email}
-                    />
-                  </InputGroup>
-                </Form.Group>
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        <i className="fas fa-key"></i>
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <Form.Control
-                      type="password"
-                      placeholder="Ingrese su contraseña"
-                      onChange={(event) =>
-                        setCredentials({
-                          ...credentials,
-                          password: event.target.value,
-                        })
-                      }
-                      value={credentials.password}
-                    />
-                  </InputGroup>
-                </Form.Group>
-                <Row>
-                  <Col xs={5} />
-                  <Button
-                    className="btn-lg btn-block"
-                    id="handleSubmit"
-                    type="submit"
-                    variant="primary"
-                    onClick={onSubmitForm}
-                  >
-                    Iniciar Sesión
-                  </Button>
-                </Row>
-              </Form>
-            </Card.Body>
-          </Card>
+    <Container fluid>
+      <Row>
+        <Col md={12} className="text-center">
+          <h2>
+            Para poder ingresar al sitio, por favor ingrese su email y
+            contraseña.
+          </h2>
+          <p>Los usuarios con los que se pueden igresar son:</p>
+          <ul>
+            {data.users.map((user, i) => (
+              <li key={i}>
+                <strong>Email:</strong> {user.email} -{" "}
+                <strong>Contraseña:</strong> {user.password}
+              </li>
+            ))}
+          </ul>
+        </Col>
+        <Col md={12} className="my-5">
+          <Row className="justify-content-center align-items-center ">
+            <Col md={3}>
+              <Card>
+                <Card.Body>
+                  <Form onSubmit={onSubmitForm}>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Email</Form.Label>
+                      <InputGroup>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text>
+                            <i className="fas fa-envelope"></i>
+                          </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control
+                          type="email"
+                          placeholder="Ingrese su email"
+                          name="email"
+                          onChange={(event) =>
+                            setCredentials({
+                              ...credentials,
+                              email: event.target.value,
+                            })
+                          }
+                          value={credentials.email}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label>Password</Form.Label>
+                      <InputGroup>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text>
+                            <i className="fas fa-key"></i>
+                          </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control
+                          type="password"
+                          placeholder="Ingrese su contraseña"
+                          onChange={(event) =>
+                            setCredentials({
+                              ...credentials,
+                              password: event.target.value,
+                            })
+                          }
+                          value={credentials.password}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                    <Row>
+                      <Col xs={5} />
+                      <Button
+                        className="btn-lg btn-block"
+                        id="handleSubmit"
+                        type="submit"
+                        variant="primary"
+                        onClick={onSubmitForm}
+                      >
+                        Iniciar Sesión
+                      </Button>
+                    </Row>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>

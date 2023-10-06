@@ -3,7 +3,13 @@ import propTypes from "prop-types";
 import { CardDeck, Col, Row } from "react-bootstrap";
 import HeroListCard from "./HeroListCard";
 
-const HeroList = ({ heroes, isInMyTeam, onAddHero, onRemoveHero }) => {
+const HeroList = ({
+  heroes,
+  isInMyTeam,
+  onAddHero,
+  onRemoveHero,
+  disabledConditional,
+}) => {
   return (
     <Row className="justify-content-center">
       {heroes.map((hero) => (
@@ -14,6 +20,7 @@ const HeroList = ({ heroes, isInMyTeam, onAddHero, onRemoveHero }) => {
               isInMyTeam={isInMyTeam}
               onAddHero={onAddHero}
               onRemoveHero={onRemoveHero}
+              disabledConditional={disabledConditional}
             />
           </CardDeck>
         </Col>
@@ -27,6 +34,7 @@ HeroList.propTypes = {
   isInMyTeam: propTypes.bool,
   onAddHero: propTypes.func.isRequired,
   onRemoveHero: propTypes.func.isRequired,
+  disabledConditional: propTypes.bool,
 };
 
 export default HeroList;

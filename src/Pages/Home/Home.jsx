@@ -4,33 +4,53 @@ import { useAlert } from "../../hooks/UseAlert";
 import Search from "../../components/Search";
 import UseFetch from "../../hooks/UseFetch";
 import HeroList from "../../components/HeroList";
-import { validarAgregar } from "../../hooks/UseTeamValidator";
+import { useTeamValidatorMessages } from "../../hooks/UseTeamValidatorMessages";
+
+const useAddHeroToMyTeam = () => {
+  const [myTeam, setMyTeam] = useState([]);
+  const [isMyTeam, setIsMyTeam] = useState(false);
+  const { state, getSuperHeroes } = UseFetch();
+
+  const addHeroToMyTeam = (hero) => {
+    // const validationResult = useTeamValidatorMessages(hero, myTeam);
+    // if (validationResult === "") {
+    //   setIsMyTeam(true);
+    //   setMyTeam([...myTeam, hero]);
+    // } else {
+    //   useAlert.fire({
+    //     icon: "error",
+    //     title: validationResult,
+    //   });
+    // }
+  };
+
+  const deleteFromMyTeam = (hero) => {
+    const myTeamFiltered = myTeam.filter((heroe) => heroe.id !== hero.id);
+    setMyTeam(myTeamFiltered);
+  };
+
+  return {
+    state,
+    getSuperHeroes,
+    myTeam,
+    isMyTeam,
+    addHeroToMyTeam,
+    deleteFromMyTeam,
+  };
+};
 
 const Home = () => {
-  const { state, getSuperHeroes } = UseFetch();
-  const [equipo, setEquipo] = useState([]);
-  const [isMyTeam, setIsMyTeam] = useState(false);
-
-  const agregarHeroeAlEquipo = (hero) => {
-    const resultadoValidacion = validarAgregar(hero, equipo);
-    if (resultadoValidacion === "") {
-      setIsMyTeam(true);
-      setEquipo([...equipo, hero]);
-    } else {
-      useAlert.fire({
-        icon: "error",
-        title: resultadoValidacion,
-      });
-    }
-  };
-
-  const sacarDelEquipo = (hero) => {
-    const equipoFiltrado = equipo.filter((heroe) => heroe.id !== hero.id);
-    setEquipo(equipoFiltrado);
-  };
+  const {
+    state,
+    getSuperHeroes,
+    myTeam,
+    isMyTeam,
+    addHeroToMyTeam,
+    deleteFromMyTeam,
+  } = useAddHeroToMyTeam();
 
   return (
-    <Jumbotron>
+    <Jumbotron className="mb-0">
       <h1 className="text-center">Eligé un Super Heroe</h1>
       <Row className="justify-content-center">
         <Col md={6} lg={3}>
@@ -41,20 +61,22 @@ const Home = () => {
         <Col lg={6}>
           <h3 className="text-center">Mi Equipo</h3>
           <HeroList
-            heroes={equipo}
+            heroes={myTeam}
             isInMyTeam={isMyTeam}
-            onAddHero={agregarHeroeAlEquipo}
-            onRemoveHero={sacarDelEquipo}
+            onAddHero={addHeroToMyTeam}
+            onRemoveHero={deleteFromMyTeam}
           />
         </Col>
         <Col lg={6}>
           <h3 className="text-center">Seleccion de personajes</h3>
           <HeroList
             heroes={state}
-            onAddHero={agregarHeroeAlEquipo}
-            onRemoveHero={sacarDelEquipo}
+            onAddHero={addHeroToMyTeam}
+            onRemoveHero={deleteFromMyTeam}
+            disabledConditional={false}
           />
         </Col>
+        <Col>{myTeam}</Col>
       </Row>
     </Jumbotron>
   );

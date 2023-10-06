@@ -2,7 +2,13 @@ import React from "react";
 import propTypes from "prop-types";
 import { Card, ListGroup, Accordion, Button } from "react-bootstrap";
 
-const HeroListCard = ({ hero, onAddHero, onRemoveHero, isInMyTeam }) => {
+const HeroListCard = ({
+  hero,
+  onAddHero,
+  onRemoveHero,
+  isInMyTeam,
+  disabledConditional,
+}) => {
   return (
     <Card>
       <Card.Img variant="top" src={hero.image.url} />
@@ -21,7 +27,18 @@ const HeroListCard = ({ hero, onAddHero, onRemoveHero, isInMyTeam }) => {
           <ListGroup.Item>
             Primera Aparción: {hero.biography["first-appearance"]}
           </ListGroup.Item>
-          <ListGroup.Item>Condicion: {hero.biography.alignment}</ListGroup.Item>
+          <ListGroup.Item>
+            Condicion:{" "}
+            <span
+              className={
+                hero.biography.alignment === "good"
+                  ? "text-success"
+                  : "text-danger"
+              }
+            >
+              {hero.biography.alignment === "good" ? "Heroe" : "Villano"}
+            </span>
+          </ListGroup.Item>
           <hr />
         </ListGroup>
         <ListGroup variant="flush">
@@ -81,6 +98,7 @@ const HeroListCard = ({ hero, onAddHero, onRemoveHero, isInMyTeam }) => {
           </Button>
         ) : (
           <Button
+            disabled={disabledConditional}
             variant="primary"
             className="text-right mt-4"
             onClick={() => onAddHero(hero)}
@@ -98,5 +116,6 @@ HeroListCard.propTypes = {
   onAddHero: propTypes.func.isRequired,
   onRemoveHero: propTypes.func.isRequired,
   isInMyTeam: propTypes.bool,
+  disabledConditional: propTypes.bool,
 };
 export default HeroListCard;
