@@ -3,28 +3,28 @@ import { MainLayout } from "../layout/MainLayout";
 import { Home } from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import { MyTeam } from "../Pages/MyTeam/MyTeam";
-
+import { RoutingConstants } from '../constants/Routing'
 // Todo routes: No tengo que poder redirigirme del login a la home o al layout main, sin estar autenticado
 export const routes = createBrowserRouter(
   [
     {
-      path: "",
+      path: RoutingConstants.START,
       element: <Login />,
     },
     {
-      path: "/login",
+      path: RoutingConstants.LOGIN,
       element: <Login />,
     },
     {
-      path: "",
+      path: RoutingConstants.START,
       element: <MainLayout />,
       children: [
         {
-          path: "/home",
+          path: RoutingConstants.HOME,
           element: <Home />,
         },
         {
-          path: "/my-team",
+          path: RoutingConstants.MYTEAM,
           element: <MyTeam />,
         },
       ],
